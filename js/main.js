@@ -145,21 +145,30 @@ function mainLoop() {
 	gracz.gravity();
 	gracz.draw(ctx);
 
+	// poniewaz na koncu wywalamy interwal, potrzebujemy czegos co pamieta
+	// stan gry do zatrzymania odswiezania klatek w wypadku gameovera
+	var state = 1;
+
 	// to samo co LOC 130
 	//w sumie to jaki jest sens iterowania po tablicy 'przeszkody' 2x w
 	// ciagu jednej klatki (tu i LOC 130)?
 	przeszkody.forEach(function(przeszkoda){
-		if(przeszkoda.chceckColision(gracz))
-		{
-			clearInterval(myVar);
+		if(przeszkoda.chceckColision(gracz)) {
+			state = 0;
 			alert("game over!");
 		}
 		przeszkoda.moveLeft();
 	});
+
+	if (state) {
+		requestAnimationFrame(mainLoop);
+	}
 }
 //menu();
 
-//
-var myVar=setInterval(mainLoop,10);
+// zamiast interwału powinienes uzywac rAF, interwały ani
+// timery nie nadaja sie do rysowania czy odświeżania widoku w przegladarce
+//var myVar=setInterval(mainLoop,10);
+requestAnimationFrame(mainLoop);
 
 })(document);
