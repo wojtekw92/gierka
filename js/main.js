@@ -93,14 +93,15 @@ c.addEventListener('click', function() {
 var imageObj = new Image();
 imageObj.src = 'img/bg.jpg';
 function checkKey(e) {
-		e = e || window.event;
+	// skad wziales ten window.event? Nigdy tego na oczy nie widzialem
+		//e = e || window.event;
 		if (e.keyCode == '38') {        // up arrow
-		gracz.moveUp();
-		}
-		else if (e.keyCode == '40') {
-		gracz.moveDown();
+			gracz.moveUp();
+		} else if (e.keyCode == '40') {
+			gracz.moveDown();
 		}
 }
+
 function getRandomInt(min, max) {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
