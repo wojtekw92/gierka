@@ -118,7 +118,7 @@ function menu() {
 	ctx.drawImage(imageObj, 0, 0, 600, 400);//narysuj tło
 	ctx.font = "40px Arial Black";
 	ctx.fillStyle = "#000000";
-	// filltext jest opor wolny, lepiej wyrzucić to do DOMA,
+	// canwasowy text jest opor wolny, lepiej wyrzucić to do DOMA,
 	// zrobic zwyklego DIVa ktory wysweitla text i wypozycjonowac
 	// go CSSem absolutnie nad canvasem
 	ctx.fillText("FLOPPY BALL",100,50);
@@ -135,11 +135,12 @@ function mainLoop() {
 	przeszkody.forEach(function(przeszkoda) {
 		przeszkoda.draw(ctx);
 	});
-	
+
 	points+=0.1;
 	ctx.font = "20px Arial";
-	ctx.strokeText("POINTS: "+Math.floor(points),10,50);
-	if(przeszkody.length>1 && !przeszkody[0].visible())przeszkody.shift();
+	// tu to damo co LOC 121 & LOC 106
+	ctx.strokeText("POINTS: "+ ~~(points),10,50);
+	if (przeszkody.length>1 && !przeszkody[0].visible()) przeszkody.shift();
 	if(przeszkody[przeszkody.length-1].visible()) przeszkody.push(new Obstacle(getRandomInt(80, 320),getRandomInt(60, 100),600+getRandomInt(150, 300)));
 	gracz.gravity();
 	gracz.draw(ctx);
