@@ -81,10 +81,15 @@ Obstacle.prototype.visible=function(){
 
 
 var points=0;
-document.onkeydown = checkKey;
-c.onclick=function(){
-gracz.moveUp();
-}
+
+//zamiast onkeydown lepiej uzyc funkcji addEventListener
+//document.onkeydown = checkKey;
+document.addEventListener('click', checkKey);
+// to samo tutaj
+c.addEventListener('click', function() {
+	gracz.moveUp();
+});
+
 var imageObj = new Image();
 imageObj.src = 'img/bg.jpg';
 function checkKey(e) {
