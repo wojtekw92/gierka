@@ -118,13 +118,17 @@ function menu() {
 	ctx.drawImage(imageObj, 0, 0, 600, 400);//narysuj tło
 	ctx.font = "40px Arial Black";
 	ctx.fillStyle = "#000000";
+	// filltext jest opor wolny, lepiej wyrzucić to do DOMA,
+	// zrobic zwyklego DIVa ktory wysweitla text i wypozycjonowac
+	// go CSSem absolutnie nad canvasem
 	ctx.fillText("FLOPPY BALL",100,50);
 }
-function mainLoop()
-{
+function mainLoop() {
 	ctx.clearRect(0,0,600,400);//wyczysc ekran
 	//ctx.drawImage(imageObj, 0, 0, 600, 400);//narysuj tło
-	for(var i=0;i<przeszkody.length;i++) przeszkody[i].draw(ctx);
+
+	for (var i=0; i<przeszkody.length; i++) przeszkody[i].draw(ctx);
+
 	points+=0.1;
 	ctx.font = "20px Arial";
 	ctx.strokeText("POINTS: "+Math.floor(points),10,50);
