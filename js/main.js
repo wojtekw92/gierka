@@ -111,8 +111,9 @@ function getRandomInt(min, max) {
 var gracz=new Gamer(300,200,5);
 var przeszkody = [];
 przeszkody.push(new Obstacle(getRandomInt(80, 320),getRandomInt(60, 100),600));
-function menu()
-{
+
+// to samo z klamerką tutaj co w LOC 12
+function menu() {
 	ctx.clearRect(0,0,600,400);//wyczysc ekran
 	ctx.drawImage(imageObj, 0, 0, 600, 400);//narysuj tło
 	ctx.font = "40px Arial Black";
