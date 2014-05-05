@@ -1,6 +1,7 @@
-// żeby nie srać globalnymi zmiennymi po glownym scopie
-// zamykamy wszystko w funkcji
-// elementu 'document' bedziemy zapewne uzywac w srodku wiec
+// Żeby nie srać globalnymi zmiennymi po glownym scopie
+// zamykamy wszystko w funkcji którą od razu wykonujemy
+
+// Elementu 'document' bedziemy zapewne uzywac w srodku wiec
 // wrzucamy go jako argument, i przekazujemy w ostatniej linii
 // pliku, wtedy ładnie sie zminimalizuje
 var GAME = (function(document, undefined) {
@@ -8,6 +9,12 @@ var c=document.getElementById("gra");
 var ctx=c.getContext("2d");
 //TUTAJ KLASA GRACZA
 
+// JavaScript ma cos takiego jak 'smart semicolon', to
+// przypadlosc ktora stara sie zgadnac gdzie ma byc srednik
+// nawet jak sie go nie postawi. Przez to gowno wszystkie
+// otweirające klamerkowe nawiasy '{' muszą byc w tej samej
+// linii co funkcja ktorej dotyczą, inaczej moze sie nieźle
+// wszystko posrać
 function Gamer(x,y,r) {
 	this.x=x;
 	this.y=y;
