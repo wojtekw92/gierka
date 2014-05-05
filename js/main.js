@@ -144,14 +144,16 @@ function mainLoop() {
 	if(przeszkody[przeszkody.length-1].visible()) przeszkody.push(new Obstacle(getRandomInt(80, 320),getRandomInt(60, 100),600+getRandomInt(150, 300)));
 	gracz.gravity();
 	gracz.draw(ctx);
-	for(var i=0;i<przeszkody.length;i++){
-		if(przeszkody[i].chceckColision(gracz))
+
+	// to samo co LOC 130
+	przeszkody.forEach(function(przeszkoda){
+		if(przeszkoda.chceckColision(gracz))
 		{
 			clearInterval(myVar);
 			alert("game over!");
 		}
-		przeszkody[i].moveLeft();
-	}
+		przeszkoda.moveLeft();
+	});
 }
 //menu();
 var myVar=setInterval(mainLoop,10);
