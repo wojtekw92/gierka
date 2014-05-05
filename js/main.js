@@ -103,10 +103,13 @@ function checkKey(e) {
 }
 
 function getRandomInt(min, max) {
-	return Math.floor(Math.random() * (max - min + 1)) + min;
+	// Zamiast w pizde wolnego Math.floor lepiej uzywac bitowego
+	// operatora do floorowania
+	return ~~(Math.random() * (max - min + 1)) + min;
+	//Math.floor(Math.random() * (max - min + 1)) + min;
 }
 var gracz=new Gamer(300,200,5);
-var przeszkody= [];
+var przeszkody = [];
 przeszkody.push(new Obstacle(getRandomInt(80, 320),getRandomInt(60, 100),600));
 function menu()
 {
