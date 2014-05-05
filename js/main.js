@@ -146,6 +146,8 @@ function mainLoop() {
 	gracz.draw(ctx);
 
 	// to samo co LOC 130
+	//w sumie to jaki jest sens iterowania po tablicy 'przeszkody' 2x w
+	// ciagu jednej klatki (tu i LOC 130)?
 	przeszkody.forEach(function(przeszkoda){
 		if(przeszkoda.chceckColision(gracz))
 		{
@@ -156,6 +158,8 @@ function mainLoop() {
 	});
 }
 //menu();
+
+//
 var myVar=setInterval(mainLoop,10);
 
 })(document);
