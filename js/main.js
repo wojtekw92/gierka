@@ -109,12 +109,14 @@ function getRandomInt(min, max) {
 	//Math.floor(Math.random() * (max - min + 1)) + min;
 }
 var gracz=new Gamer(300,200,5);
-var przeszkody = [];
+przeszkody = [];
 przeszkody.push(new Obstacle(getRandomInt(80, 320),getRandomInt(60, 100),600));
 
 // to samo z klamerką tutaj co w LOC 12
 function menu() {
-	ctx.clearRect(0,0,600,400);//wyczysc ekran
+	// nie musisz czyscic ekranu skororysujesz po całości tło
+	//ctx.clearRect(0,0,600,400);//wyczysc ekran
+
 	ctx.drawImage(imageObj, 0, 0, 600, 400);//narysuj tło
 	ctx.font = "40px Arial Black";
 	ctx.fillStyle = "#000000";
@@ -152,7 +154,7 @@ function mainLoop() {
 	// to samo co LOC 130
 	//w sumie to jaki jest sens iterowania po tablicy 'przeszkody' 2x w
 	// ciagu jednej klatki (tu i LOC 130)?
-	przeszkody.forEach(function(przeszkoda){
+	przeszkody.forEach(function(przeszkoda) {
 		if(przeszkoda.chceckColision(gracz)) {
 			state = 0;
 			alert("game over!");
