@@ -127,8 +127,15 @@ function mainLoop() {
 	ctx.clearRect(0,0,600,400);//wyczysc ekran
 	//ctx.drawImage(imageObj, 0, 0, 600, 400);//narysuj tło
 
-	for (var i=0; i<przeszkody.length; i++) przeszkody[i].draw(ctx);
-
+	//w ten sposob tablica 'przeszkody' jest pukana za każdym przejsciem pętli o swoj 'length'
+	//for (var i=0; i<przeszkody.length; i++)
+	//lepiej sprawdzic to raz, w 1szym warunku
+	//for (var i=0, l = przeszkody.length; i < l; i++) przeszkody[i].draw(ctx);
+	//a najlepiej uzyc Arrayowej metody forEach
+	przeszkody.forEach(function(przeszkoda) {
+		przeszkoda.draw(ctx);
+	});
+	
 	points+=0.1;
 	ctx.font = "20px Arial";
 	ctx.strokeText("POINTS: "+Math.floor(points),10,50);
