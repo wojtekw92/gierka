@@ -58,11 +58,11 @@ Obstacle.prototype.chceckColision= function(obiekt)
 	}
 	else return false;
 }
-Obstacle.prototype.draw= function(context)
+Obstacle.prototype.draw = function(context)
 {
 	context.fillStyle = "#FF0000";
 	context.fillRect(this.x,this.y+this.gap,this.width,400-this.y-this.gap);
-	context.fillRect(this.x,0,this.width,this.y);
+	//context.fillRect(this.x,0,this.width,this.y);
 }
 Obstacle.prototype.moveTo=function(moveToX){
 	this.x=moveToX;
@@ -84,7 +84,7 @@ var points=0;
 
 //zamiast onkeydown lepiej uzyc funkcji addEventListener
 //document.onkeydown = checkKey;
-document.addEventListener('click', checkKey);
+document.addEventListener('keydown', checkKey);
 // to samo tutaj
 c.addEventListener('click', function() {
 	gracz.moveUp();
@@ -134,14 +134,14 @@ function mainLoop() {
 	//lepiej sprawdzic to raz, w 1szym warunku
 	//for (var i=0, l = przeszkody.length; i < l; i++) przeszkody[i].draw(ctx);
 	//a najlepiej uzyc Arrayowej metody forEach
-	przeszkody.forEach(function(przeszkoda) {
-		przeszkoda.draw(ctx);
-	});
+	// przeszkody.forEach(function(przeszkoda) {
+	// 	przeszkoda.draw(ctx);
+	// });
 
 	points+=0.1;
-	ctx.font = "20px Arial";
+	//ctx.font = "20px Arial";
 	// tu to damo co LOC 121 & LOC 106
-	ctx.strokeText("POINTS: "+ ~~(points),10,50);
+	//ctx.strokeText("POINTS: "+ ~~(points),10,50);
 	if (przeszkody.length>1 && !przeszkody[0].visible()) przeszkody.shift();
 	if(przeszkody[przeszkody.length-1].visible()) przeszkody.push(new Obstacle(getRandomInt(80, 320),getRandomInt(60, 100),600+getRandomInt(150, 300)));
 	gracz.gravity();
@@ -155,6 +155,7 @@ function mainLoop() {
 	//w sumie to jaki jest sens iterowania po tablicy 'przeszkody' 2x w
 	// ciagu jednej klatki (tu i LOC 130)?
 	przeszkody.forEach(function(przeszkoda) {
+		przeszkoda.draw(ctx);
 		if(przeszkoda.chceckColision(gracz)) {
 			state = 0;
 			alert("game over!");
