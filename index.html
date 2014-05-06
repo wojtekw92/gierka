@@ -10,9 +10,12 @@
 </head>
 <body>
 <!--<p>gierka</p>-->
-<canvas id="gra" width="600" height="400" style="background-image:url('img/bg.jpg');">
+<div style="position:relative; width:600px; height:400px; padding: 0px; margin: 0 px;">
+<canvas id="gra" width="600" height="400" style="background-image:url('img/bg.jpg'); position:absolute; top:0px; left:0px; z-index:0;">
 Tekst
 </canvas>
+<p id="wynik" style="position:absolute; top:20px; left: 50px; font-size:24px;"></p>
+</div>
 <script src="js/main.js"></script>
 </body>
 </html>

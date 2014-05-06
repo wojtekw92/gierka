@@ -6,6 +6,7 @@
 // pliku, wtedy ładnie sie zminimalizuje
 var GAME = (function(document, undefined) {
 var c=document.getElementById("gra");
+var score=document.getElementById("wynik");
 var ctx=c.getContext("2d");
 //TUTAJ KLASA GRACZA
 
@@ -39,8 +40,7 @@ Gamer.prototype.draw=function(context){
 	context.stroke();
 }
 //TUTAJ ZROBIMY KLASĘ DLA PRZESKODY
-function Obstacle(y,gap,x)//constructor
-{
+function Obstacle(y,gap,x){
 	this.y=y;
 	this.gap=gap;
 	this.x=x;
@@ -49,20 +49,17 @@ Obstacle.prototype.x=0;
 Obstacle.prototype.y=0;
 Obstacle.prototype.gap=40;
 Obstacle.prototype.width=20;
-Obstacle.prototype.chceckColision= function(obiekt)
-{
-	if(this.x+this.width>obiekt.x && obiekt.x>this.x)
-	{
+Obstacle.prototype.chceckColision= function(obiekt){
+	if(this.x+this.width>obiekt.x && obiekt.x>this.x){
 		if(obiekt.y-obiekt.r>this.y && obiekt.y+obiekt.r<this.y+this.gap) return false;
 		else return true;
 	}
 	else return false;
 }
-Obstacle.prototype.draw = function(context)
-{
+Obstacle.prototype.draw = function(context){
 	context.fillStyle = "#FF0000";
 	context.fillRect(this.x,this.y+this.gap,this.width,400-this.y-this.gap);
-	//context.fillRect(this.x,0,this.width,this.y);
+	context.fillRect(this.x,0,this.width,this.y);
 }
 Obstacle.prototype.moveTo=function(moveToX){
 	this.x=moveToX;
@@ -142,6 +139,7 @@ function mainLoop() {
 	//ctx.font = "20px Arial";
 	// tu to damo co LOC 121 & LOC 106
 	//ctx.strokeText("POINTS: "+ ~~(points),10,50);
+	score.innerHTML="POINTS: "+ ~~(points);
 	if (przeszkody.length>1 && !przeszkody[0].visible()) przeszkody.shift();
 	if(przeszkody[przeszkody.length-1].visible()) przeszkody.push(new Obstacle(getRandomInt(80, 320),getRandomInt(60, 100),600+getRandomInt(150, 300)));
 	gracz.gravity();
