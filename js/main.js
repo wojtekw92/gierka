@@ -1,8 +1,21 @@
+// Żeby nie srać globalnymi zmiennymi po glownym scopie
+// zamykamy wszystko w funkcji którą od razu wykonujemy
+
+// Elementu 'document' bedziemy zapewne uzywac w srodku wiec
+// wrzucamy go jako argument, i przekazujemy w ostatniej linii
+// pliku, wtedy ładnie sie zminimalizuje
+var GAME = (function(document, undefined) {
 var c=document.getElementById("gra");
 var ctx=c.getContext("2d");
 //TUTAJ KLASA GRACZA
-function Gamer(x,y,r)
-{
+
+// JavaScript ma cos takiego jak 'smart semicolon', to
+// przypadlosc ktora stara sie zgadnac gdzie ma byc srednik
+// nawet jak sie go nie postawi. Przez to gowno wszystkie
+// otweirające klamerkowe nawiasy '{' muszą byc w tej samej
+// linii co funkcja ktorej dotyczą, inaczej moze sie nieźle
+// wszystko posrać
+function Gamer(x,y,r) {
 	this.x=x;
 	this.y=y;
 	this.r=r;
@@ -45,11 +58,11 @@ Obstacle.prototype.chceckColision= function(obiekt)
 	}
 	else return false;
 }
-Obstacle.prototype.draw= function(context)
+Obstacle.prototype.draw = function(context)
 {
 	context.fillStyle = "#FF0000";
 	context.fillRect(this.x,this.y+this.gap,this.width,400-this.y-this.gap);
-	context.fillRect(this.x,0,this.width,this.y);
+	//context.fillRect(this.x,0,this.width,this.y);
 }
 Obstacle.prototype.moveTo=function(moveToX){
 	this.x=moveToX;
@@ -68,56 +81,97 @@ Obstacle.prototype.visible=function(){
 
 
 var points=0;
-document.onkeydown = checkKey;
-c.onclick=function(){
-gracz.moveUp();
-}
+
+//zamiast onkeydown lepiej uzyc funkcji addEventListener
+//document.onkeydown = checkKey;
+document.addEventListener('keydown', checkKey);
+// to samo tutaj
+c.addEventListener('click', function() {
+	gracz.moveUp();
+});
+
 var imageObj = new Image();
 imageObj.src = 'img/bg.jpg';
 function checkKey(e) {
-    e = e || window.event;
-    if (e.keyCode == '38') {        // up arrow
-		gracz.moveUp();
-    }
-    else if (e.keyCode == '40') {
-	   gracz.moveDown();
-    }
+	// skad wziales ten window.event? Nigdy tego na oczy nie widzialem
+		//e = e || window.event;
+		if (e.keyCode == '38') {        // up arrow
+			gracz.moveUp();
+		} else if (e.keyCode == '40') {
+			gracz.moveDown();
+		}
 }
+
 function getRandomInt(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+	// Zamiast w pizde wolnego Math.floor lepiej uzywac bitowego
+	// operatora do floorowania
+	return ~~(Math.random() * (max - min + 1)) + min;
+	//Math.floor(Math.random() * (max - min + 1)) + min;
 }
 var gracz=new Gamer(300,200,5);
-var przeszkody= [];
+przeszkody = [];
 przeszkody.push(new Obstacle(getRandomInt(80, 320),getRandomInt(60, 100),600));
-function menu()
-{
-	ctx.clearRect(0,0,600,400);//wyczysc ekran
+
+// to samo z klamerką tutaj co w LOC 12
+function menu() {
+	// nie musisz czyscic ekranu skororysujesz po całości tło
+	//ctx.clearRect(0,0,600,400);//wyczysc ekran
+
 	ctx.drawImage(imageObj, 0, 0, 600, 400);//narysuj tło
 	ctx.font = "40px Arial Black";
 	ctx.fillStyle = "#000000";
+	// canwasowy text jest opor wolny, lepiej wyrzucić to do DOMA,
+	// zrobic zwyklego DIVa ktory wysweitla text i wypozycjonowac
+	// go CSSem absolutnie nad canvasem
 	ctx.fillText("FLOPPY BALL",100,50);
 }
-function mainLoop()
-{
+function mainLoop() {
 	ctx.clearRect(0,0,600,400);//wyczysc ekran
 	//ctx.drawImage(imageObj, 0, 0, 600, 400);//narysuj tło
-	for(var i=0;i<przeszkody.length;i++) przeszkody[i].draw(ctx);
+
+	//w ten sposob tablica 'przeszkody' jest pukana za każdym przejsciem pętli o swoj 'length'
+	//for (var i=0; i<przeszkody.length; i++)
+	//lepiej sprawdzic to raz, w 1szym warunku
+	//for (var i=0, l = przeszkody.length; i < l; i++) przeszkody[i].draw(ctx);
+	//a najlepiej uzyc Arrayowej metody forEach
+	// przeszkody.forEach(function(przeszkoda) {
+	// 	przeszkoda.draw(ctx);
+	// });
+
 	points+=0.1;
-	ctx.font = "20px Arial";
-	ctx.strokeText("POINTS: "+Math.floor(points),10,50);
-	if(przeszkody.length>1 && !przeszkody[0].visible())przeszkody.shift();
+	//ctx.font = "20px Arial";
+	// tu to damo co LOC 121 & LOC 106
+	//ctx.strokeText("POINTS: "+ ~~(points),10,50);
+	if (przeszkody.length>1 && !przeszkody[0].visible()) przeszkody.shift();
 	if(przeszkody[przeszkody.length-1].visible()) przeszkody.push(new Obstacle(getRandomInt(80, 320),getRandomInt(60, 100),600+getRandomInt(150, 300)));
 	gracz.gravity();
 	gracz.draw(ctx);
-	for(var i=0;i<przeszkody.length;i++){
-		if(przeszkody[i].chceckColision(gracz))
-		{
-			clearInterval(myVar);
+
+	// poniewaz na koncu wywalamy interwal, potrzebujemy czegos co pamieta
+	// stan gry do zatrzymania odswiezania klatek w wypadku gameovera
+	var state = 1;
+
+	// to samo co LOC 130
+	//w sumie to jaki jest sens iterowania po tablicy 'przeszkody' 2x w
+	// ciagu jednej klatki (tu i LOC 130)?
+	przeszkody.forEach(function(przeszkoda) {
+		przeszkoda.draw(ctx);
+		if(przeszkoda.chceckColision(gracz)) {
+			state = 0;
 			alert("game over!");
 		}
-		przeszkody[i].moveLeft();
+		przeszkoda.moveLeft();
+	});
+
+	if (state) {
+		requestAnimationFrame(mainLoop);
 	}
 }
 //menu();
-var myVar=setInterval(mainLoop,10);
-		
+
+// zamiast interwału powinienes uzywac rAF, interwały ani
+// timery nie nadaja sie do rysowania czy odświeżania widoku w przegladarce
+//var myVar=setInterval(mainLoop,10);
+requestAnimationFrame(mainLoop);
+
+})(document);
